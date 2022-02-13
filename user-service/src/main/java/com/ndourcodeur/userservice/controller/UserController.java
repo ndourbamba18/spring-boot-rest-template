@@ -74,16 +74,6 @@ public class UserController {
     }
 
     /**
-     *    URL ===> http://localhost:8100/api/v1/users/user/detail-email/{userEmail}
-     */
-    @GetMapping(path = "/user/detail-email/{email}")
-    public ResponseEntity<?> fetchUserByEmail(@PathVariable String email){
-        if (!userService.existsByEmail(email))
-            return new ResponseEntity<>(new Message("User does not exist with userEmail:"+email), HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(userService.findUserByEmail(email), HttpStatus.OK);
-    }
-
-    /**
      *    URL ===> http://localhost:8100/api/v1/users/{idUser}
      */
     @DeleteMapping(path = "/{idUser}")
@@ -117,7 +107,7 @@ public class UserController {
     }
 
     /**
-     *    Fetching All Cars And All LapTops By UserId From Car Microservice And LapTop Microservices Using Rest Template
+     *    Fetching All Cars And All LapTops By User id From Car Microservice And LapTop Microservices Using Feign
      *
      *    URL ===> http://localhost:8100/api/v1/users/cars-and-lapTops/{userId}
      */

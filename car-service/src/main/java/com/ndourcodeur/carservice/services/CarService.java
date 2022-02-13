@@ -15,6 +15,6 @@ public interface CarService {
     public List<Car> findAllCars();
     public Car findCar(Long id);
     public void deleteCar(Long id);
-    public List<Car> findCarsByUserEmail(String userEmail);
+    public List<Car> findCarsByUserId(Long userId);
     public ResponseTemplateCarWithUser findCarWithUser(Long carId);
 }

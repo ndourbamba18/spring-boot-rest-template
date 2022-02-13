@@ -27,5 +27,5 @@ public class LaptopRequest {
 
     private String description;
 
-    private String userEmail;
+    private Long userId;
 }

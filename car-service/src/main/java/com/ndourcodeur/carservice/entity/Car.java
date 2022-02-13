@@ -33,5 +33,5 @@ public class Car extends DateAudit {
 
     private Boolean isInStock;
 
-    private String userEmail;
+    private Long userId;
 }

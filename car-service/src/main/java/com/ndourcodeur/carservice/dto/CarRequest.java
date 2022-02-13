@@ -25,5 +25,5 @@ public class CarRequest {
 
     private Boolean isInStock;
 
-    private String userEmail;
+    private Long userId;
 }

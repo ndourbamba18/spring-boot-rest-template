@@ -68,12 +68,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findUserByEmail(String email) {
-        log.info("Inside findUserByEmail of UserService");
-        return userRepository.findByEmailContaining(email);
-    }
-
-    @Override
     public void deleteUser(Long id) {
         log.info("Inside findAllLapTopsWithUser of UserService");
         User existingUser = userRepository.findById(id)

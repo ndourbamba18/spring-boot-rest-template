@@ -39,7 +39,7 @@ public class CarServiceImpl implements CarService {
         car.setBrand(request.getBrand());
         car.setRegistrationNumber(UUID.randomUUID().toString());
         car.setIsInStock(request.getIsInStock());
-        car.setUserEmail(request.getUserEmail());
+        car.setUserId(request.getUserId());
         return carRepository.save(car);
     }
 
@@ -54,7 +54,7 @@ public class CarServiceImpl implements CarService {
         car.setBrand(request.getBrand());
         car.setRegistrationNumber(UUID.randomUUID().toString());
         car.setIsInStock(request.getIsInStock());
-        car.setUserEmail(request.getUserEmail());
+        car.setUserId(request.getUserId());
         return carRepository.save(car);
     }
 
@@ -80,16 +80,16 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> findCarsByUserEmail(String userEmail) {
+    public List<Car> findCarsByUserId(Long userId) {
         log.info("Inside findByUserId of CarService");
-        return carRepository.findByUserEmail(userEmail);
+        return carRepository.findByUserId(userId);
     }
 
     @Override
     public ResponseTemplateCarWithUser findCarWithUser(Long carId) {
         ResponseTemplateCarWithUser response = new ResponseTemplateCarWithUser();
         Car car = findCar(carId);
-        User user = restTemplate.getForObject("http://localhost:8100/api/v1/users/user/detail-email/" + car.getUserEmail(), User.class);
+        User user = restTemplate.getForObject("http://localhost:8100/api/v1/users/user-detail/" + car.getUserId(), User.class);
         response.setCar(car);
         response.setUser(user);
         return response;
