@@ -79,14 +79,12 @@ public class LapTopController {
     }
 
     /**
-     *    URL ===> http://localhost:8300/api/v1/lapTops/byUserId/{userId}
+     *    URL ===> http://localhost:8300/api/v1/lapTops/byUserEmail/{userEmail}
      */
-    @GetMapping(path = "/byUserId/{userId}")
-    public ResponseEntity<?> fetchAllLapTopsByUserId(@PathVariable Long userId){
+    @GetMapping(path = "/byUserEmail/{userEmail}")
+    public ResponseEntity<?> fetchAllLapTopsByUserId(@PathVariable String userEmail){
         log.info("Inside fetchAllLapTopsByUserId of LapTopController");
-        if (!lapTopRepository.existsById(userId))
-            return new ResponseEntity<>(new Message("User does not exist with ID:"+userId), HttpStatus.BAD_REQUEST);
-        List<Laptop> laptops = lapTopService.findLapTopsByUserId(userId);
+        List<Laptop> laptops = lapTopService.findLapTopsByUserEmail(userEmail);
         return new ResponseEntity<>(laptops, HttpStatus.OK);
     }
 

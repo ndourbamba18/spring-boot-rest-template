@@ -15,6 +15,7 @@ public interface UserService {
     public User editUser(Long id, UserRequest request);
     public List<User> findAllUsers();
     public User findUser(Long id);
+    public User findUserByEmail(String userEmail);
     public void deleteUser(Long id);
     public User getUsername(String username);
     public User getEmail(String email);

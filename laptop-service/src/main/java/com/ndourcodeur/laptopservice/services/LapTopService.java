@@ -16,6 +16,6 @@ public interface LapTopService {
     public List<Laptop> findAllLapTops();
     public Laptop findLapTop(Long id);
     public void deleteLapTop(Long id);
-    public List<Laptop> findLapTopsByUserId(Long userId);
+    public List<Laptop> findLapTopsByUserEmail(String email);
     public ResponseTemplateLapTopWithUser findLapTopWithUser(Long laptopId);
 }

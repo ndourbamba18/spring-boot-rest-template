@@ -72,13 +72,11 @@ public class CarController {
     }
 
     /**
-     *    URL ===> http://localhost:8200/api/v1/cars/byUserId/{userId}
+     *    URL ===> http://localhost:8200/api/v1/cars/byUserEmail/{userEmail}
      */
-    @GetMapping(path = "/byUserId/{userId}")
-    public ResponseEntity<?> fetchAllCarsByUserId(@PathVariable Long userId){
-        if (!carRepository.existsById(userId))
-            return new ResponseEntity<>(new Message("User does not exist with ID:"+userId), HttpStatus.BAD_REQUEST);
-        List<Car> cars = carService.findCarsByUserId(userId);
+    @GetMapping(path = "/byUserEmail/{userEmail}")
+    public ResponseEntity<?> fetchAllCarsByUserId(@PathVariable String userEmail){
+        List<Car> cars = carService.findCarsByUserEmail(userEmail);
         if (cars.isEmpty())
             return new ResponseEntity<>(new Message("Sorry, No Content!"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(cars, HttpStatus.OK);

@@ -38,7 +38,7 @@ public class LapTopServiceImpl implements LapTopService {
         laptop.setLapTopBrand(request.getLapTopBrand());
         laptop.setIsInStock(request.getIsInStock());
         laptop.setDescription(request.getDescription());
-        laptop.setUserId(request.getUserId());
+        laptop.setUserEmail(request.getUserEmail());
         return lapTopRepository.save(laptop);
     }
 
@@ -53,7 +53,7 @@ public class LapTopServiceImpl implements LapTopService {
         laptop.setLapTopBrand(request.getLapTopBrand());
         laptop.setIsInStock(request.getIsInStock());
         laptop.setDescription(request.getDescription());
-        laptop.setUserId(request.getUserId());
+        laptop.setUserEmail(request.getUserEmail());
         return lapTopRepository.save(laptop);
     }
 
@@ -79,9 +79,9 @@ public class LapTopServiceImpl implements LapTopService {
     }
 
     @Override
-    public List<Laptop> findLapTopsByUserId(Long userId) {
+    public List<Laptop> findLapTopsByUserEmail(String userEmail) {
         log.info("Inside findByUserId of LapTopService");
-        return lapTopRepository.findByUserId(userId);
+        return lapTopRepository.findByUserEmail(userEmail);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class LapTopServiceImpl implements LapTopService {
         log.info("Inside findLapTopWithUser of LapTopService");
         ResponseTemplateLapTopWithUser response = new ResponseTemplateLapTopWithUser();
         Laptop laptop = findLapTop(laptopId);
-        User user = restTemplate.getForObject("http://localhost:8100/api/v1/users/user-detail/" + laptop.getUserId(), User.class);
+        User user = restTemplate.getForObject("http://localhost:8100/api/v1/users/user/detail-email/" + laptop.getUserEmail(), User.class);
         response.setLaptop(laptop);
         response.setUser(user);
         return response;

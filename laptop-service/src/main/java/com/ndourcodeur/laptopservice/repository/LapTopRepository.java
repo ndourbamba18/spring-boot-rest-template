@@ -9,8 +9,5 @@ import java.util.List;
 @Repository
 public interface LapTopRepository extends JpaRepository<Laptop, Long> {
 
-    List<Laptop> findByUserId(Long userId);
-
-    /*public Laptop findByNameContaining(String name);
-    public boolean existsByName(String name);*/
+    List<Laptop> findByUserEmail(String email);
 }

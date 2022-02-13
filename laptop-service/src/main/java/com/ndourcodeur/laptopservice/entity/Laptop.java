@@ -33,5 +33,5 @@ public class Laptop extends DateAudit {
 
     private String description;
 
-    private Long userId;
+    private String userEmail;
 }
