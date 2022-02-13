@@ -3,7 +3,9 @@ package com.ndourcodeur.carservice.controller;
 import com.ndourcodeur.carservice.dto.CarRequest;
 import com.ndourcodeur.carservice.entity.Car;
 import com.ndourcodeur.carservice.message.Message;
+import com.ndourcodeur.carservice.repository.CarRepository;
 import com.ndourcodeur.carservice.services.CarService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,9 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping(path = "/api/v1/cars")
 public class CarController {
+
+    @Autowired
+    private CarRepository carRepository;
 
     private final CarService carService;
 
@@ -58,22 +63,32 @@ public class CarController {
     }
 
     /**
-     *    URL ===> http://localhost:8200/api/v1/cars/byUserId/{userId}
-     */
-    @GetMapping(path = "/byUserId/{userId}")
-    public ResponseEntity<?> fetchAllCarsByUserId(@PathVariable Long userId){
-        List<Car> cars = carService.findByUserId(userId);
-        if (cars.isEmpty())
-            return new ResponseEntity<>(new Message("Sorry, No Content Almost!"), HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(cars, HttpStatus.OK);
-    }
-
-    /**
      *    URL ===> http://localhost:8200/api/v1/cars/{id}
      */
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteCarById(@PathVariable Long id){
         carService.deleteCar(id);
         return new ResponseEntity<>(new Message("Car deleted successfully with ID:"+id), HttpStatus.OK);
+    }
+
+    /**
+     *    URL ===> http://localhost:8200/api/v1/cars/byUserId/{userId}
+     */
+    @GetMapping(path = "/byUserId/{userId}")
+    public ResponseEntity<?> fetchAllCarsByUserId(@PathVariable Long userId){
+        if (!carRepository.existsById(userId))
+            return new ResponseEntity<>(new Message("User does not exist with ID:"+userId), HttpStatus.BAD_REQUEST);
+        List<Car> cars = carService.findCarsByUserId(userId);
+        if (cars.isEmpty())
+            return new ResponseEntity<>(new Message("Sorry, No Content!"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(cars, HttpStatus.OK);
+    }
+
+    /**
+     *    URL ===> http://localhost:8200/api/v1/cars/detail-car-and-user/{carId}
+     */
+    @GetMapping(path = "/detail-car-and-user/{carId}")
+    public ResponseEntity<?> getDetailCarWithUser(@PathVariable Long carId){
+        return new ResponseEntity<>(carService.findCarWithUser(carId), HttpStatus.OK);
     }
 }

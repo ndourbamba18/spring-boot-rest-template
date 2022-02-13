@@ -3,6 +3,8 @@ package com.ndourcodeur.laptopservice.services;
 import com.ndourcodeur.laptopservice.dto.LaptopRequest;
 import com.ndourcodeur.laptopservice.entity.Laptop;
 import com.ndourcodeur.laptopservice.exception.ResourceNotFoundException;
+import com.ndourcodeur.laptopservice.model.ResponseTemplateLapTopWithUser;
+import com.ndourcodeur.laptopservice.model.User;
 import com.ndourcodeur.laptopservice.repository.LapTopRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ public class LapTopServiceImpl implements LapTopService {
 
     @Autowired
     RestTemplate restTemplate;
+
     private final LapTopRepository lapTopRepository;
 
     public LapTopServiceImpl(LapTopRepository lapTopRepository) {
@@ -27,6 +30,7 @@ public class LapTopServiceImpl implements LapTopService {
 
     @Override
     public Laptop addLapTop(LaptopRequest request) {
+        log.info("Inside addLopTop of LapTopService");
         Laptop laptop = new Laptop();
         laptop.setId(request.getId());
         laptop.setLapTopName(request.getLapTopName());
@@ -35,12 +39,12 @@ public class LapTopServiceImpl implements LapTopService {
         laptop.setIsInStock(request.getIsInStock());
         laptop.setDescription(request.getDescription());
         laptop.setUserId(request.getUserId());
-        log.info("Inside addLopTop of LapTopService");
         return lapTopRepository.save(laptop);
     }
 
     @Override
     public Laptop editLapTop(Long id, LaptopRequest request) {
+        log.info("Inside editLopTop of LapTopService");
         Laptop laptop = lapTopRepository.findById(id)
                         .orElseThrow( () -> new ResourceNotFoundException("LapTop does not exist with ID:"+id));
         laptop.setId(request.getId());
@@ -50,7 +54,6 @@ public class LapTopServiceImpl implements LapTopService {
         laptop.setIsInStock(request.getIsInStock());
         laptop.setDescription(request.getDescription());
         laptop.setUserId(request.getUserId());
-        log.info("Inside editLopTop of LapTopService");
         return lapTopRepository.save(laptop);
     }
 
@@ -68,15 +71,27 @@ public class LapTopServiceImpl implements LapTopService {
     }
 
     @Override
-    public List<Laptop> findByUserId(Long userId) {
+    public void deleteLapTop(Long id) {
+        log.info("Inside deleteLopTop of LapTopService");
+        Laptop laptop = lapTopRepository.findById(id)
+                .orElseThrow( () -> new ResourceNotFoundException("LapTop does not exist with ID:"+id));
+        lapTopRepository.delete(laptop);
+    }
+
+    @Override
+    public List<Laptop> findLapTopsByUserId(Long userId) {
+        log.info("Inside findByUserId of LapTopService");
         return lapTopRepository.findByUserId(userId);
     }
 
     @Override
-    public void deleteLapTop(Long id) {
-        Laptop laptop = lapTopRepository.findById(id)
-                .orElseThrow( () -> new ResourceNotFoundException("LapTop does not exist with ID:"+id));
-        log.info("Inside deleteLopTop of LapTopService");
-        lapTopRepository.delete(laptop);
+    public ResponseTemplateLapTopWithUser findLapTopWithUser(Long laptopId) {
+        log.info("Inside findLapTopWithUser of LapTopService");
+        ResponseTemplateLapTopWithUser response = new ResponseTemplateLapTopWithUser();
+        Laptop laptop = findLapTop(laptopId);
+        User user = restTemplate.getForObject("http://localhost:8100/api/v1/users/user-detail/" + laptop.getUserId(), User.class);
+        response.setLaptop(laptop);
+        response.setUser(user);
+        return response;
     }
 }

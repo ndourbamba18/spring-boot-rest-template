@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(path = "/api/v1/users")
 public class UserController {
+
+    @Autowired
+    private UserRepository userRepository;
 
     private final UserService userService;
 
@@ -70,37 +74,23 @@ public class UserController {
     }
 
     /**
-     *    URL ===> http://localhost:8100/api/v1/users/user-car/{userId}
+     *    URL ===> http://localhost:8100/api/v1/users/{idUser}
      */
-    @GetMapping(path = "/user-car/{userId}")
-    public ResponseEntity<?> fetchUserWithCar(@PathVariable Long userId){
-        return new ResponseEntity<>(userService.findUserWithCar(userId), HttpStatus.OK);
+    @DeleteMapping(path = "/{idUser}")
+    public ResponseEntity<?> deleteUserById(@PathVariable Long idUser){
+        userService.deleteUser(idUser);
+        return new ResponseEntity<>(new Message("User deleted successfully with ID:"+idUser), HttpStatus.OK);
     }
 
-    /**
-     *    URL ===> http://localhost:8100/api/v1/users/user-lapTop/{userId}
-     */
-    @GetMapping(path = "/user-lapTop/{userId}")
-    public ResponseEntity<?> fetchUserWithLapTop(@PathVariable Long userId){
-        return new ResponseEntity<>(userService.findUserWithLapTop(userId), HttpStatus.OK);
-    }
-
-    /**
-     *    URL ===> http://localhost:8100/api/v1/users/user-car-lapTop/{userId}
-     */
-    @GetMapping(path = "/user-car-lapTop/{userId}")
-    public ResponseEntity<?> fetchUserWithCarAndLapTop(@PathVariable Long userId){
-        return new ResponseEntity<>(userService.findUserWithCarAndLapTop(userId), HttpStatus.OK);
-    }
+    // Rest Template
 
     /**
      *    URL ===> http://localhost:8100/api/v1/users/cars/{userId}
      */
     @GetMapping(path = "/cars/{userId}")
-    public ResponseEntity<List<Car>> fetchAllCarsWithUser(@PathVariable Long userId){
-        User user = userService.findUser(userId);
-        if (user == null)
-            return new ResponseEntity(new Message("Sorry, There is no resource almost."), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> fetchAllCarsWithUser(@PathVariable Long userId){
+        if (!userRepository.existsById(userId))
+            return new ResponseEntity<>(new Message("User does not exist with ID:"+userId), HttpStatus.BAD_REQUEST);
         List<Car> cars = userService.findAllCarsWithUser(userId);
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
@@ -110,19 +100,20 @@ public class UserController {
      */
     @GetMapping(path = "/lapTops/{userId}")
     public ResponseEntity<?> fetchAllLapTopsWithUser(@PathVariable Long userId){
-        User user = userService.findUser(userId);
-        if (user == null)
-            return new ResponseEntity<>(new Message("Sorry, There is no resource almost."), HttpStatus.NOT_FOUND);
+        if (!userRepository.existsById(userId))
+            return new ResponseEntity<>(new Message("User does not exist with ID:"+userId), HttpStatus.BAD_REQUEST);
         List<LapTop> lapTops = userService.findAllLapTopsWithUser(userId);
         return new ResponseEntity<>(lapTops, HttpStatus.OK);
     }
 
     /**
-     *    URL ===> http://localhost:8100/api/v1/users/{idUser}
+     *    Fetching All Cars And All LapTops By User id From Car Microservice And LapTop Microservices Using Feign
+     *
+     *    URL ===> http://localhost:8100/api/v1/users/cars-and-lapTops/{userId}
      */
-    @DeleteMapping(path = "/{idUser}")
-    public ResponseEntity<?> deleteUserById(@PathVariable Long idUser){
-        userService.deleteUser(idUser);
-        return new ResponseEntity<>(new Message("User deleted successfully with ID:"+idUser), HttpStatus.OK);
+    @GetMapping(path = "/cars-and-lapTops/{userId}")
+    public ResponseEntity<?> getAllCarsAndAllLapTopsByUserId(@PathVariable Long userId){
+        Map<String, Object> result = userService.getUserWithLapTopsAndCars(userId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
