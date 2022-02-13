@@ -36,6 +36,9 @@ public class LapTopServiceImpl implements LapTopService {
         laptop.setLapTopName(request.getLapTopName());
         laptop.setLapTopPrice(request.getLapTopPrice());
         laptop.setLapTopBrand(request.getLapTopBrand());
+        laptop.setModel(request.getModel());
+        laptop.setImageUrl(request.getImageUrl());
+        laptop.setDateReleased(request.getDateReleased());
         laptop.setIsInStock(request.getIsInStock());
         laptop.setDescription(request.getDescription());
         laptop.setUserEmail(request.getUserEmail());
@@ -51,6 +54,9 @@ public class LapTopServiceImpl implements LapTopService {
         laptop.setLapTopName(request.getLapTopName());
         laptop.setLapTopPrice(request.getLapTopPrice());
         laptop.setLapTopBrand(request.getLapTopBrand());
+        laptop.setModel(request.getModel());
+        laptop.setImageUrl(request.getImageUrl());
+        laptop.setDateReleased(request.getDateReleased());
         laptop.setIsInStock(request.getIsInStock());
         laptop.setDescription(request.getDescription());
         laptop.setUserEmail(request.getUserEmail());
@@ -89,7 +95,7 @@ public class LapTopServiceImpl implements LapTopService {
         log.info("Inside findLapTopWithUser of LapTopService");
         ResponseTemplateLapTopWithUser response = new ResponseTemplateLapTopWithUser();
         Laptop laptop = findLapTop(laptopId);
-        User user = restTemplate.getForObject("http://localhost:8100/api/v1/users/user/detail-email/" + laptop.getUserEmail(), User.class);
+        User user = restTemplate.getForObject("http://user-service/api/v1/users/user/detail-email/" + laptop.getUserEmail(), User.class);
         response.setLaptop(laptop);
         response.setUser(user);
         return response;

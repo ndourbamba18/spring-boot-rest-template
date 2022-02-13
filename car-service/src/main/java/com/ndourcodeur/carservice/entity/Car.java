@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 @Entity
 @Data
@@ -28,6 +29,12 @@ public class Car extends DateAudit {
 
     @NotBlank(message = "This field is required!")
     private String brand;
+
+    private String model;
+
+    private String imageUrl;
+
+    private Date dateReleased;
 
     private String registrationNumber;
 

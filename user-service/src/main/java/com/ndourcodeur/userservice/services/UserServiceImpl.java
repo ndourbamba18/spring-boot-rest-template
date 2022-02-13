@@ -108,14 +108,14 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<Car> findAllCarsWithUser(Long userId) {
         log.info("Inside findAllCarsWithUser of UserService");
-        List<Car> cars = restTemplate.getForObject("http://localhost:8200/api/v1/cars/byUserId/" + userId, List.class);
+        List<Car> cars = restTemplate.getForObject("http://car-service/api/v1/cars/byUserId/" + userId, List.class);
         return cars;
     }
 
     @Override
     public List<LapTop> findAllLapTopsWithUser(Long userId) {
         log.info("Inside deleteUser of UserService");
-        List<LapTop> lapTops = restTemplate.getForObject("http://localhost:8300/api/v1/lapTops/byUserId/" + userId, List.class);
+        List<LapTop> lapTops = restTemplate.getForObject("http://laptop-service/api/v1/lapTops/byUserId/" + userId, List.class);
         return lapTops;
     }
 

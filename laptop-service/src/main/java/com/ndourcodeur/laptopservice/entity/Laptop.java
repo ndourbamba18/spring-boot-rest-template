@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 @Entity
 @Data
@@ -28,6 +29,14 @@ public class Laptop extends DateAudit {
 
     @NotBlank(message = "This field is required!")
     private String lapTopBrand;
+
+    @Enumerated(EnumType.STRING)
+    private Model model;
+
+    @NotBlank(message = "This field is required!")
+    private String imageUrl;
+
+    private Date dateReleased;
 
     private Boolean isInStock;
 

@@ -37,6 +37,9 @@ public class CarServiceImpl implements CarService {
         car.setName(request.getName());
         car.setPrice(request.getPrice());
         car.setBrand(request.getBrand());
+        car.setModel(request.getModel());
+        car.setImageUrl(request.getImageUrl());
+        car.setDateReleased(request.getDateReleased());
         car.setRegistrationNumber(UUID.randomUUID().toString());
         car.setIsInStock(request.getIsInStock());
         car.setUserEmail(request.getUserEmail());
@@ -52,6 +55,9 @@ public class CarServiceImpl implements CarService {
         car.setName(request.getName());
         car.setPrice(request.getPrice());
         car.setBrand(request.getBrand());
+        car.setModel(request.getModel());
+        car.setImageUrl(request.getImageUrl());
+        car.setDateReleased(request.getDateReleased());
         car.setRegistrationNumber(UUID.randomUUID().toString());
         car.setIsInStock(request.getIsInStock());
         car.setUserEmail(request.getUserEmail());
@@ -89,7 +95,7 @@ public class CarServiceImpl implements CarService {
     public ResponseTemplateCarWithUser findCarWithUser(Long carId) {
         ResponseTemplateCarWithUser response = new ResponseTemplateCarWithUser();
         Car car = findCar(carId);
-        User user = restTemplate.getForObject("http://localhost:8100/api/v1/users/user/detail-email/" + car.getUserEmail(), User.class);
+        User user = restTemplate.getForObject("http://user-service/api/v1/users/user/detail-email/" + car.getUserEmail(), User.class);
         response.setCar(car);
         response.setUser(user);
         return response;

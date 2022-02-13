@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +23,14 @@ public class CarRequest {
 
     @NotBlank(message = "This field is required!")
     private String brand;
+
+    @NotBlank(message = "This field is required!")
+    private String model;
+
+    @NotBlank(message = "This field is required!")
+    private String imageUrl;
+
+    private Date dateReleased;
 
     private Boolean isInStock;
 
